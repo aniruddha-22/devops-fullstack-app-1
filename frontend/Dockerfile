@@ -1,21 +1,21 @@
-# Use the official Go image as the base image
-FROM golang:1.19
+# Use the official Node.js image as the base image
+FROM node:14.17.0
 
 # Set the working directory
 WORKDIR /app
 
-# Copy the Go mod and sum files and download the dependencies
-COPY go.mod go.sum ./
-RUN go mod download
+# Copy the package.json and package-lock.json files and install dependencies
+COPY package*.json ./
+RUN npm install
 
 # Copy the source code into the container
 COPY . .
 
-# Build the Go application
-RUN go build -o main .
+# Build the ReactJS application
+RUN npm run build
 
-# Expose the port on which the backend server listens
-EXPOSE 8080
+# Expose the port on which the frontend server listens
+EXPOSE 3000
 
-# Start the backend server
-CMD ["./main"]
+# Start the frontend server
+CMD ["npm", "start"]
